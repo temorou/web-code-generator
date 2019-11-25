@@ -1,0 +1,32 @@
+<template>
+    <page-info  model="<%= tableUpperName %>" :form-model.sync="form" :rules="rules">
+        <% tableKeys.forEach(function(key){ -%>
+        <% if(key.pages.includes('info')){ %>
+        <el-form-item label="<%= key.name %>" prop="<%= key.key %>">
+            <%_ if(/Id$/.test(key.key)){ -%>
+            <async-select v-model="form.<%= key.key %>" model="<%= key.key.replace(/Id$/,'') %>"></async-select>
+            <%_ }else{ -%>
+            <el-input <%- key.max?'':'maxlength="key.max"' %> v-model="<%= key.key %>"></el-input>
+            <%_ }; -%>
+        </el-form-item>
+        <% }; -%>
+        <% }); %>
+    </page-info>
+</template>
+
+<script>
+    export default {
+        name: '<%= tableBigUpperName %>Info',
+        data() {
+            return {
+                rules: <%- infoRules %>,
+                form:{
+                }
+            };
+        }
+    }
+</script>
+
+<style scoped lang="less">
+
+</style>

@@ -1,0 +1,80 @@
+let list = [];
+const count=15;
+for(let i=0;i<count;i++){
+    let l = {};
+    <%- JSON.stringify(tableKeys) %>.forEach(v=>{
+        if(v.type=='int'){
+            l[v.key] = parseInt(Math.random()*(10**10))
+        }else if(v.type=='datetime'){
+            l[v.key] = parseInt(Date.now() - parseInt(Math.random()*1000*60*60*24*30*3))
+        }else{
+            l[v.key] = String.fromCharCode(parseInt(Math.random()*(20000)+20000))
+        }
+
+    });
+    list.push(l);
+}
+export default{
+    getList:(data)=>{
+        let {currentPage = 1, pageSize = 10} = JSON.parse(data.body)
+        let begin = (currentPage-1)*pageSize,
+            end = begin + pageSize -1;
+        return {
+            code:200,
+            msg:'',
+            data:{
+                list:JSON.parse(JSON.stringify(list.filter((v,i)=>i>=begin&&i<=end))),
+                count:list.length
+            }
+        };
+    },
+    getDownList:()=>{
+        let listDep = JSON.parse(JSON.stringify(list)).map(v=>({
+            value:v.id,
+            label:v.name
+        }))
+        return {
+            code:200,
+            msg:'',
+            data:listDep
+        };
+    },
+    add:(data)=>{
+        data = JSON.parse(data.body)
+        data.id = Date.now()
+        list.unshift(data)
+        return {
+            code:200,
+            msg:'新增成功',
+            data:null
+        };
+    },
+    edit:(data)=>{
+        data = JSON.parse(data.body)
+        list.some((v,i)=>{
+            if(data.id==v.id){
+                list.splice(i,1,data)
+                return true
+            }
+        })
+        return {
+            code:200,
+            msg:'修改成功',
+            data:null
+        };
+    },
+    remove:(data)=>{
+        let {id} = JSON.parse(data.body)
+        list.some((v,i)=>{
+            if(id==v.id){
+                list.splice(i,1)
+                return true
+            }
+        })
+        return {
+            code:200,
+            msg:'删除成功',
+            data:null
+        };
+    },
+}

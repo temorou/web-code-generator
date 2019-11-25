@@ -1,0 +1,39 @@
+<template>
+    <div>
+        <page-list model="<%= tableUpperName %>"
+                   :rules="rules"
+                   :column-data="columnData"
+                   :condition="condition">
+            <% tableKeys.forEach(function(key){ -%>
+            <% if(key.pages.includes('condition')){ %>
+            <el-form-item label="<%= key.name %>" prop="<%= key.key %>">
+                <el-input <%- key.max?'':'maxlength="key.max"' %> v-model="<%= key.key %>"></el-input>
+            </el-form-item>
+            <% }; -%>
+            <% }); %>
+            <<%= tableName %>-info></<%= tableName %>-info>
+        </page-list>
+    </div>
+</template>
+
+<script>
+    import <%= tableBigUpperName %>Info from "./<%= tableName %>-info";
+
+    export default {
+        components:{
+            <%= tableBigUpperName %>Info
+        },
+        data() {
+            return {
+                columnData:<%- columnData %>,
+                condition:{
+                },
+                rules: <%- infoRules %>
+            };
+        }
+    }
+</script>
+
+<style scoped lang="less">
+
+</style>

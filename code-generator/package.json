@@ -1,0 +1,41 @@
+{
+  "name": "code-generator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "npm run service | npm run serve",
+    "service": "node bin/index.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "core-js": "^3.3.2",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "iview": "^3.5.3",
+    "jsoneditor": "^7.2.1",
+    "multer": "^1.4.2",
+    "mysql": "^2.17.1",
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.0.0",
+    "@vue/cli-plugin-router": "^4.0.0",
+    "@vue/cli-service": "^4.0.0",
+    "less": "^2.7.3",
+    "less-loader": "^5.0.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
