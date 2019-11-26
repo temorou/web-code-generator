@@ -1,0 +1,103 @@
+package com.<%= projectName %>.<%= tableUpperName %>.service.impl;
+
+import com.<%= projectName %>.common.Constant;
+import com.<%= projectName %>.common.PageModle;
+import com.<%= projectName %>.common.ResultData;
+import com.<%= projectName %>.common.DropDownList;
+import com.<%= projectName %>.<%= tableUpperName %>.dao.<%= tableBigUpperName %>Dao;
+import com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>;
+import com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>Condition;
+import com.<%= projectName %>.<%= tableUpperName %>.service.<%= tableBigUpperName %>Service;
+
+import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.Date;
+
+/**
+* <%= tableComment %>
+*
+* Created by xuxiang on
+*/
+@Service
+public class <%= tableBigUpperName %>ServiceImpl implements <%= tableBigUpperName %>Service {
+
+	@Resource
+	private <%= tableBigUpperName %>Dao <%= tableUpperName %>Dao;
+
+	/**
+    * 新增
+    */
+	@Override
+	public ResultData<String> insert(<%= tableBigUpperName %> <%= tableUpperName %>) {
+
+		// valid
+		if (<%= tableUpperName %> == null) {
+			return new ResultData<String>(Constant.FAILURE_CODE, "必要参数缺失");
+        }
+		Date date =new Date();
+		<%= tableUpperName %>.setId(UUID.randomUUID().toString());
+		<%= tableUpperName %>.setCreateTime(date);
+		<%= tableUpperName %>.setUpdateTime(date);
+		<%= tableUpperName %>Dao.insert(<%= tableUpperName %>);
+        return ResultData.SUCCESS;
+	}
+
+	/**
+	* 删除
+	*/
+	@Override
+	public ResultData<String> delete(String id) {
+		int ret = <%= tableUpperName %>Dao.delete(id);
+		return ret>0?ResultData.SUCCESS:ResultData.FAIL;
+	}
+
+	/**
+	* 更新
+	*/
+	@Override
+	public ResultData<String> update(<%= tableBigUpperName %> <%= tableUpperName %>) {
+		Date date =new Date();
+		<%= tableUpperName %>.setUpdateTime(date);
+		int ret = <%= tableUpperName %>Dao.update(<%= tableUpperName %>);
+		return ret>0?ResultData.SUCCESS:ResultData.FAIL;
+	}
+
+	/**
+	* Load查询
+	*/
+	@Override
+	public ResultData load(String id) {
+		<%= tableBigUpperName %> <%= tableUpperName %> = <%= tableUpperName %>Dao.load(id);
+		return <%= tableUpperName %>==null?ResultData.FAIL:new ResultData(<%= tableUpperName %>);
+	}
+
+	/**
+	* 分页查询
+	*/
+	@Override
+	public PageModle<<%= tableBigUpperName %>> pageList(<%= tableBigUpperName %>Condition <%= tableUpperName %>Condition) {
+
+		int currentPage = <%= tableUpperName %>Condition.getCurrentPage();
+		int pageSize = <%= tableUpperName %>Condition.getPageSize();
+		int begin = (currentPage-1)*pageSize;
+		<%= tableUpperName %>Condition.setBegin(begin);
+
+		List<<%= tableBigUpperName %>> pageList = <%= tableUpperName %>Dao.pageList(<%= tableUpperName %>Condition);
+		int totalCount = <%= tableUpperName %>Dao.pageListCount(<%= tableUpperName %>Condition);
+
+		// result
+		PageModle<<%= tableBigUpperName %>> result = new PageModle<<%= tableBigUpperName %>>();
+
+		result.setCount(totalCount);
+		result.setList(pageList);
+		return result;
+	}
+
+	@Override
+	public List<DropDownList> getDownList() {
+		return <%= tableUpperName %>Dao.getDownList();
+	}
+}

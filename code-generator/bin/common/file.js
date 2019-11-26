@@ -4,6 +4,9 @@ let config = require("../config.js");
 let temFun = config.temFun;
 let coverFun = config.coverFun;
 temFun = {
+    projectName(table){
+        return 'daxin'
+    },
     tableComment(table){
         return table.name
     },
@@ -78,13 +81,14 @@ module.exports = {
                 if(disableFile.includes(temData[v].name)){
                     return
                 }
+
                 let data = temData[v].source;
                 let path = temData[v].path;
 
                 path = ejs.render(path, tems[d.tableName]);
                 data = ejs.render(data, tems[d.tableName]);
                 let fileName = ejs.render(temData[v].fileName, tems[d.tableName]);
-                fs.mkdir(`${path}`, ()=>{})
+                fs.mkdirSync(`${path}`, { recursive: true })
                 fileName = `${path}/${fileName}`
                 fs.writeFile(fileName, data,()=>{})
             })

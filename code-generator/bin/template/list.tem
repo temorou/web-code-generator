@@ -7,7 +7,7 @@
             <% tableKeys.forEach(function(key){ -%>
             <% if(key.pages.includes('condition')){ %>
             <el-form-item label="<%= key.name %>" prop="<%= key.key %>">
-                <el-input <%- key.max?'':'maxlength="key.max"' %> v-model="<%= key.key %>"></el-input>
+                <el-input <%- key.max?'':'maxlength="key.max"' %> v-model="condition.<%= key.key %>"></el-input>
             </el-form-item>
             <% }; -%>
             <% }); %>

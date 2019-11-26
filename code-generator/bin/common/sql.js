@@ -109,6 +109,7 @@ module.exports = {
                             type,
                             field:table.Field,
                             name:table.Comment,
+                            upperKey:key.replace(/^./,($0)=>$0.toUpperCase()),
                             max:types[2]&&types[2].replace(/\(|\)/g,''),
                             required:table.Null!='YES',
                             pages,

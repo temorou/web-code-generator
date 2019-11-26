@@ -6,7 +6,7 @@
             <%_ if(/Id$/.test(key.key)){ -%>
             <async-select v-model="form.<%= key.key %>" model="<%= key.key.replace(/Id$/,'') %>"></async-select>
             <%_ }else{ -%>
-            <el-input <%- key.max?'':'maxlength="key.max"' %> v-model="<%= key.key %>"></el-input>
+            <el-input <%- key.max?'':'maxlength="key.max"' %> v-model="form.<%= key.key %>"></el-input>
             <%_ }; -%>
         </el-form-item>
         <% }; -%>

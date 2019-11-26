@@ -1,0 +1,51 @@
+package com.<%= projectName %>.<%= tableUpperName %>.dao;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
+import com.<%= projectName %>.common.DropDownList;
+import com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>;
+import com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>Condition;
+
+import java.util.List;
+
+/**
+* <%= tableComment %>
+*
+* Created by xuxiang on
+*/
+@Component
+public interface <%= tableBigUpperName %>Dao {
+
+    /**
+    * 新增
+    */
+    public int insert(@Param("<%= tableUpperName %>") <%= tableBigUpperName %> <%= tableUpperName %>);
+
+    /**
+    * 删除
+    */
+    public int delete(@Param("id") String id);
+
+    /**
+    * 更新
+    */
+    public int update(@Param("<%= tableUpperName %>") <%= tableBigUpperName %> <%= tableUpperName %>);
+
+    /**
+    * Load查询
+    */
+    public <%= tableBigUpperName %> load(@Param("id") String id);
+
+    /**
+    * 分页查询Data
+    */
+	public List<<%= tableBigUpperName %>> pageList(@Param("condition") <%= tableBigUpperName %>Condition <%= tableUpperName %>Condition);
+
+    /**
+    * 分页查询Count
+    */
+    public int pageListCount(@Param("condition") <%= tableBigUpperName %>Condition <%= tableUpperName %>Condition);
+
+    List<DropDownList> getDownList();
+}

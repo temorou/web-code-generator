@@ -1,0 +1,60 @@
+package com.<%= projectName %>.<%= tableUpperName %>.model;
+
+import java.io.Serializable;
+import com.<%= projectName %>.common.ListCondition;
+import java.util.Date;
+
+/**
+*  <%= tableComment %>
+*
+*  Created by xuxiang on
+*/
+public class <%= tableBigUpperName %>Condition extends ListCondition {
+    private static final long serialVersionUID = 42L;
+
+<% tableKeys.forEach(function(key){ -%>
+    <% if(key.type=='Date'){ %>
+    /**
+    * <%= key.name %>查询起始时间
+    */
+    private String <%= key.key %>From;
+    /**
+    * <%= key.name %>查询结束时间
+    */
+    private String <%= key.key %>To;
+    <% }else{ -%>
+    /**
+    * <%= key.name %>
+    */
+    private <%= key.type %> <%= key.key %>;
+    <% }; -%>
+<% }); %>
+
+<% tableKeys.forEach(function(key){ -%>
+    <% if(key.type=='Date'){ %>
+    public String get<%= key.upperKey %>From() {
+        return <%= key.key %>From;
+    }
+
+    public void set<%= key.upperKey %>From(String <%= key.key %>From) {
+        this.<%= key.key %>From = <%= key.key %>From;
+    }
+
+    public String get<%= key.upperKey %>To() {
+        return <%= key.key %>To;
+    }
+
+    public void set<%= key.upperKey %>To(String <%= key.key %>To) {
+        this.<%= key.key %>To = <%= key.key %>To;
+    }
+    <% }else{ -%>
+    public <%= key.type %> get<%= key.upperKey %>() {
+        return <%= key.key %>;
+    }
+
+    public void set<%= key.upperKey %>(<%= key.type %> <%= key.key %>) {
+        this.<%= key.key %> = <%= key.key %>;
+    }
+    <% }; -%>
+<% }); %>
+}

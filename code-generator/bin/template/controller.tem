@@ -1,0 +1,87 @@
+package com.<%= projectName %>.<%= tableUpperName %>.controller;
+
+import com.<%= projectName %>.common.PageModle;
+import com.<%= projectName %>.common.ResultData;
+import com.<%= projectName %>.common.DropDownList;
+import com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>;
+import com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>Condition;
+import com.<%= projectName %>.<%= tableUpperName %>.service.<%= tableBigUpperName %>Service;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.Map;
+import java.util.List;
+
+/**
+* <%= tableComment %>
+*
+* Created by xuxiang on
+*/
+@Controller
+@RequestMapping("api/<%= tableUpperName %>")
+public class <%= tableBigUpperName %>Controller {
+
+    @Resource
+    private <%= tableBigUpperName %>Service <%= tableUpperName %>Service;
+
+    /**
+    * 新增
+    */
+    @RequestMapping("/add")
+    @ResponseBody
+    public ResultData<String> add(@RequestBody <%= tableBigUpperName %> <%= tableUpperName %>){
+        return <%= tableUpperName %>Service.insert(<%= tableUpperName %>);
+    }
+
+    /**
+    * 删除
+    */
+    @RequestMapping("/remove")
+    @ResponseBody
+    public ResultData<String> remove(@RequestBody Map<String,String> idMap){
+        return <%= tableUpperName %>Service.delete(idMap.get("id"));
+    }
+
+    /**
+    * 更新
+    */
+    @RequestMapping("/edit")
+    @ResponseBody
+    public ResultData<String> edit(@RequestBody <%= tableBigUpperName %> <%= tableUpperName %>){
+        return <%= tableUpperName %>Service.update(<%= tableUpperName %>);
+    }
+
+    /**
+    * Load查询
+    */
+    @RequestMapping("/getDetail")
+    @ResponseBody
+    public ResultData getDetail(@RequestBody Map<String,String> idMap){
+        ResultData result = <%= tableUpperName %>Service.load(idMap.get("id"));
+        return result;
+    }
+
+    /**
+    * 分页查询
+    */
+    @RequestMapping("/getList")
+    @ResponseBody
+    public ResultData<Object> getList(@RequestBody <%= tableBigUpperName %>Condition <%= tableUpperName %>Condition) {
+         PageModle<<%= tableBigUpperName %>> result = <%= tableUpperName %>Service.pageList(<%= tableUpperName %>Condition);
+         return new ResultData(result);
+    }
+    /**
+    * 下拉框查询
+    */
+    @RequestMapping("/getDownList")
+    @ResponseBody
+    public ResultData<List> getDownList() {
+           List<DropDownList> result = <%= tableUpperName %>Service.getDownList();
+           return new ResultData(result);
+    }
+}

@@ -1,0 +1,43 @@
+package com.<%= projectName %>.<%= tableUpperName %>.service;
+
+import com.<%= projectName %>.common.PageModle;
+import com.<%= projectName %>.common.ResultData;
+import com.<%= projectName %>.common.DropDownList;
+import com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>;
+import com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>Condition;
+
+import java.util.List;
+/**
+* <%= tableComment %>
+*
+* Created by xuxiang on
+*/
+public interface <%= tableBigUpperName %>Service {
+
+    /**
+    * 新增
+    */
+    public ResultData<String> insert(<%= tableBigUpperName %> <%= tableUpperName %>);
+
+    /**
+    * 删除
+    */
+    public ResultData<String> delete(String id);
+
+    /**
+    * 更新
+    */
+    public ResultData<String> update(<%= tableBigUpperName %> <%= tableUpperName %>);
+
+    /**
+    * Load查询
+    */
+    public ResultData load(String id);
+
+    /**
+    * 分页查询
+    */
+    public PageModle<<%= tableBigUpperName %>> pageList(<%= tableBigUpperName %>Condition <%= tableUpperName %>Condition);
+
+    List<DropDownList> getDownList();
+}

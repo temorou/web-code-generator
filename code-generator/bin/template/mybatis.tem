@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.<%= projectName %>.<%= tableUpperName %>.dao.<%= tableBigUpperName %>Dao">
+
+    <resultMap id="<%= tableUpperName %>" type="com.<%= projectName %>.<%= tableUpperName %>.model.<%= tableBigUpperName %>" >
+    <% tableKeys.forEach(function(key,index){ -%>
+        <result column="<%= key.field %>" property="<%= key.key %>" />
+    <% }); %>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    <% tableKeys.forEach(function(key,index){ -%>
+         `<%= key.field %>`<%- index<tableKeys.length-1?',':'' %>
+    <% }); %>
+    </sql>
+
+    <insert id="insert" parameterType="java.util.Map" >
+        INSERT INTO <%= tableName %> (
+        <% tableKeys.forEach(function(key,index){ -%>
+           `<%= key.field %>`<%- index<tableKeys.length-1?',':'' %>
+        <% }); %>
+        )
+        VALUES(
+        <% tableKeys.forEach(function(key,index){ -%>
+            #{ <%= tableUpperName %>.<%= key.key %>}<%- index<tableKeys.length-1?',':'' %>
+        <% }); %>
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.util.Map" >
+        DELETE FROM <%= tableName %>
+        WHERE `id` = #{id}
+    </delete>
+
+    <update id="update" parameterType="java.util.Map" >
+        UPDATE <%= tableName %>
+        <set>
+        <% tableKeys.forEach(function(key){ -%>
+        <% if(key.key != "id"){ %>
+            <if test="<%= tableUpperName %>.<%= key.key %> != null">
+                <%= key.field %> = #{<%= tableUpperName %>.<%= key.key %>},
+            </if>
+        <% }; -%>
+        <% }); %>
+        </set>
+        WHERE `id` = #{<%= tableUpperName %>.id}
+    </update>
+
+
+    <select id="load" parameterType="java.util.Map" resultMap="<%= tableUpperName %>">
+        SELECT <include refid="Base_Column_List" />
+        FROM <%= tableName %>
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="pageList" parameterType="java.util.Map" resultMap="<%= tableUpperName %>">
+        SELECT <include refid="Base_Column_List" />
+        FROM <%= tableName %>
+        WHERE 1=1
+        <% tableKeys.forEach(function(key){ -%>
+           <% if(key.key != "id"&&key.type=='String'){ %>
+              <if test="condition.<%= key.key %> != null">
+                and <%= key.field %> like concat(concat('%',#{condition.<%= key.key %>}), '%')
+              </if>
+           <% }; -%>
+           <% if(key.key != "id"&&key.type=='Date'){ %>
+              <if test="condition.<%= key.key %>From != null">
+                and <%= key.field %> <![CDATA[>]]> CONCAT(#{condition.<%= key.key %>From},' 00:00:00')
+              </if>
+              <if test="condition.<%= key.key %>To != null">
+                and <%= key.field %> <![CDATA[<]]> CONCAT(#{condition.<%= key.key %>To},' 23:59:59')
+              </if>
+           <% }; -%>
+        <% }); %>
+        LIMIT #{condition.begin}, #{condition.pageSize}
+    </select>
+
+    <select id="pageListCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(1)
+        FROM <%= tableName %>
+        WHERE 1=1
+        <% tableKeys.forEach(function(key){ -%>
+           <% if(key.key != "id"&&key.type=='String'){ %>
+              <if test="condition.<%= key.key %> != null">
+                and <%= key.field %> like concat(concat('%',#{condition.<%= key.key %>}), '%')
+              </if>
+           <% }; -%>
+           <% if(key.key != "id"&&key.type=='Date'){ %>
+              <if test="condition.<%= key.key %>From != null">
+                and <%= key.field %> <![CDATA[>]]> CONCAT(#{condition.<%= key.key %>From},' 00:00:00')
+              </if>
+              <if test="condition.<%= key.key %>To != null">
+                and <%= key.field %> <![CDATA[<]]> CONCAT(#{condition.<%= key.key %>To},' 23:59:59')
+              </if>
+           <% }; -%>
+        <% }); %>
+    </select>
+
+    <select id="getDownList" resultType="com.<%= projectName %>.common.DropDownList">
+        SELECT id as value , name as label
+        FROM <%= tableName %>
+    </select>
+
+</mapper>
